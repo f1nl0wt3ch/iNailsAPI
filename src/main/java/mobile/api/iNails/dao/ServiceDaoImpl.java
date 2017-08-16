@@ -1,5 +1,6 @@
 package mobile.api.iNails.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,5 +109,17 @@ public class ServiceDaoImpl implements ServiceDao {
 			System.out.println("No service found cause "+ e);
 			return null;
 		}
+	}
+
+	@Override
+	public List<Service> findServicesByCategory(List<Integer> categoryIdList) {
+		List<Service> allService = new ArrayList<Service>();
+		for(int i=0; i < categoryIdList.size(); i++){
+			List<Service> services = findServicesByCategory(categoryIdList.get(i));
+			for(int j=0; j < services.size();j++){
+				allService.add(services.get(j));
+			}
+		}
+		return allService;
 	}
 }
