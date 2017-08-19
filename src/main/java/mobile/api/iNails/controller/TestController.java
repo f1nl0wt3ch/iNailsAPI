@@ -1,5 +1,6 @@
 package mobile.api.iNails.controller;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,8 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import mobile.api.iNails.dao.CategoryDao;
 import mobile.api.iNails.dao.ServiceDao;
+import mobile.api.iNails.dao.TimeDao;
+import mobile.api.iNails.domain.Artist;
+import mobile.api.iNails.domain.ArtistImpl;
 import mobile.api.iNails.domain.Category;
 import mobile.api.iNails.domain.Service;
+import mobile.api.iNails.domain.Time;
+import mobile.api.iNails.domain.TimeImpl;
 
 @Controller
 public class TestController {
@@ -19,6 +25,8 @@ public class TestController {
 	private CategoryDao categoryDao;
 	@Autowired
 	private ServiceDao serviceDao;
+	@Autowired
+	private TimeDao timeDao;
 	
 	@RequestMapping(value="test",method= RequestMethod.GET)
 	public String test(){
@@ -37,6 +45,22 @@ public class TestController {
 		   System.out.println(i+". "+allService.get(i).getName());
 		}
 		return "service";
+	}
+	
+	@RequestMapping(value="time", method = RequestMethod.GET)
+	public String time(){
+		Time time = new TimeImpl();
+		Artist artist = new ArtistImpl();
+		Date date = new Date(0);
+		
+		artist.setArtistID(2);
+		time.setTimeID(12);
+		time.setTime("16:00");
+		time.setArtist(artist);
+		time.setDate(date);
+		timeDao.createTime(time);
+		System.out.println("Time id "+ timeDao.getLastInsert());
+		return "time";
 	}
 
 }

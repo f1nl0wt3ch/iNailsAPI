@@ -5,11 +5,11 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import mobile.api.iNails.domain.ArtistImpl;
 import mobile.api.iNails.domain.CustomerImpl;
 import mobile.api.iNails.domain.Order;
 import mobile.api.iNails.domain.OrderImpl;
 import mobile.api.iNails.domain.StatusImpl;
+import mobile.api.iNails.domain.TimeImpl;
 
 public class OrderRowMapper implements RowMapper<Order> {
 
@@ -17,15 +17,18 @@ public class OrderRowMapper implements RowMapper<Order> {
 	public Order mapRow(ResultSet rs, int row) throws SQLException {
 		Order order = new OrderImpl();
 		CustomerImpl customer = new CustomerImpl();
-		ArtistImpl artist = new ArtistImpl();
 		StatusImpl status = new StatusImpl();
+		TimeImpl timeReservation = new TimeImpl();
 		customer.setCustomerID(rs.getInt("CustomerID_FK"));
-		artist.setArtistID(rs.getInt("ArtistID_FK"));
 		status.setStatusID(rs.getInt("StatusID_FK"));
 		order.setOrderID(rs.getInt("OrderID"));
-		order.setArtist(artist);
+		timeReservation.setTimeID(rs.getInt("TimeID_FK"));
+		
+		order.setTimeReservation(timeReservation);
 		order.setCustomer(customer);
 		order.setStatus(status);
+		order.setTimeReservation(timeReservation);
+		
 		order.setOrderDate(rs.getDate("OrderDate"));
 		return order;
 	}

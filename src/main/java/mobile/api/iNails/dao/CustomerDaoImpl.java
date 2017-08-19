@@ -84,4 +84,11 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 	}
 
+	@Override
+	public int getLastInsert() {
+		String sql = "SELECT * FROM Customer ORDER BY CustomerID DESC LIMIT 1";
+		RowMapper<Customer> rm = new CustomerRowMapper();
+		return jdbcTemplate.query(sql, rm).get(0).getCustomerID();
+	}
+
 }

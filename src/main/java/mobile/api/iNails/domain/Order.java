@@ -11,10 +11,6 @@ public interface Order {
 
 	public void setCustomer(CustomerImpl customer);
 
-	public ArtistImpl getArtist();
-
-	public void setArtist(ArtistImpl artist);
-
 	public StatusImpl getStatus();
 
 	public void setStatus(StatusImpl status);
@@ -22,6 +18,9 @@ public interface Order {
 	public Date getOrderDate();
 
 	public void setOrderDate(Date orderDate);
+
+	public Time getTimeReservation();
+	public void setTimeReservation(Time timeReservation);
 
 
 }

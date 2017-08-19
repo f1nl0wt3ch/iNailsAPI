@@ -4,16 +4,18 @@ public class InvoiceImpl implements Invoice{
     private Order order;
     private Customer customer;
     private Artist artist;
+    private Time timeReservation;
     private String services;
     private double totalPayment;
     private int duration;
     private Status status;
+    
 	public InvoiceImpl() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public InvoiceImpl(Order order, Customer customer, Artist artist, String services, double totalPayment,
-			int duration) {
+			int duration, Time timeReservation) {
 		super();
 		this.order = order;
 		this.customer = customer;
@@ -21,6 +23,7 @@ public class InvoiceImpl implements Invoice{
 		this.services = services;
 		this.totalPayment = totalPayment;
 		this.duration = duration;
+		this.timeReservation = timeReservation;
 	}
 	public Order getOrder() {
 		return order;
@@ -63,6 +66,12 @@ public class InvoiceImpl implements Invoice{
 	}
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+	public Time getTimeReservation() {
+		return timeReservation;
+	}
+	public void setTimeReservation(Time timeReservation) {
+		this.timeReservation = timeReservation;
 	}
     
     

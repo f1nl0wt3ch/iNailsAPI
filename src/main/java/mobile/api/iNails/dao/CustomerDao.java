@@ -14,4 +14,5 @@ public interface CustomerDao {
     public int createCustomer(Customer customer);
     public int updateCustomer(Customer customer);
     public int deleteCustomer(int customerID);
+    public int getLastInsert();
 }

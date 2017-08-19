@@ -15,6 +15,8 @@ import mobile.api.iNails.domain.Order;
 import mobile.api.iNails.domain.OrderImpl;
 import mobile.api.iNails.domain.Status;
 import mobile.api.iNails.domain.StatusImpl;
+import mobile.api.iNails.domain.Time;
+import mobile.api.iNails.domain.TimeImpl;
 
 public class InvoiceRowMapper implements RowMapper<Invoice> {
 
@@ -32,6 +34,11 @@ public class InvoiceRowMapper implements RowMapper<Invoice> {
 		Artist artist = new ArtistImpl();
 		artist.setName(rs.getString("Artist"));
 		
+		Time timeReservation = new TimeImpl();
+		timeReservation.setDate(rs.getDate("DateReservation"));
+		timeReservation.setArtist(artist);
+		timeReservation.setTime(rs.getString("TimeReservation"));
+		
 		Order order = new OrderImpl();
 		order.setOrderID(rs.getInt("o.OrderID"));
 		order.setOrderDate(rs.getDate("o.Date"));
@@ -40,10 +47,11 @@ public class InvoiceRowMapper implements RowMapper<Invoice> {
 		invoice.setDuration(rs.getInt("Duration"));
 		invoice.setTotalPayment(rs.getDouble("TotalPayment"));
 		invoice.setServices(rs.getString("Services"));
-		invoice.setArtist(artist);
+		
 		invoice.setCustomer(customer);
 		invoice.setOrder(order);
 		invoice.setStatus(status);
+		invoice.setTimeReservation(timeReservation);
 		
 		return invoice;
 	}

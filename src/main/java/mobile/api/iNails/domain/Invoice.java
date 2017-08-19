@@ -15,4 +15,7 @@ public interface Invoice {
 	public void setDuration(int duration);
 	public Status getStatus();
 	public void setStatus(Status status);
+	public Time getTimeReservation();
+	public void setTimeReservation(Time timeReservation);
+    
 }

@@ -11,8 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import mobile.api.iNails.domain.Invoice;
 import mobile.api.iNails.domain.Order;
+import mobile.api.iNails.domain.Time;
 import mobile.api.iNails.rowmapper.InvoiceRowMapper;
 import mobile.api.iNails.rowmapper.OrderRowMapper;
+import mobile.api.iNails.rowmapper.TimeRowMapper;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
@@ -43,8 +45,20 @@ public class OrderDaoImpl implements OrderDao {
 
 	@Override
 	public int createOrder(Order order) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "INSERT INTO Orders(CustomerID_FK,StatusID_FK,Date,TimeID_FK) VALUES (:customerID,:statusID,:orderDate,:timeID)";
+		MapSqlParameterSource paramMap = new MapSqlParameterSource();
+		paramMap.addValue("customerID", order.getCustomer().getCustomerID());
+		paramMap.addValue("statusID", order.getStatus().getStatusID());
+		paramMap.addValue("orderDate", order.getOrderDate());
+		paramMap.addValue("timeID", order.getTimeReservation().getTimeID());
+		
+		try {
+			int row = jdbcTemplate.update(sql, paramMap);
+			return row;
+		} catch (DataAccessException e) {
+			System.out.println("Cannot insert new order cause "+e);
+			return 0;
+		}
 	}
 
 	@Override
@@ -61,12 +75,13 @@ public class OrderDaoImpl implements OrderDao {
 
 	@Override
 	public Invoice findInvoiceByOrderNumber(int orderID) {
-		String sql = "SELECT o.OrderID,o.Date, GROUP_CONCAT(s.Name) as Services,sum(s.Time) as Duration,sum(s.price) as TotalPayment, a.Name as Artist,c.Name as Customer,c.Phone as CustomerPhone,st.Name as Status"
-				+" FROM Orders as o INNER JOIN Artist as a ON a.ArtistID = o.ArtistID_FK"
+		String sql = "SELECT o.OrderID,o.Date, GROUP_CONCAT(s.Name) as Services,sum(s.Time) as Duration,sum(s.price) as TotalPayment,c.Name as Customer,c.Phone as CustomerPhone,st.Name as Status, t.Time as TimeReservation, t.Date as DateReservation, a.Name as Artist"
+				+" FROM Artist as a, Time as t,Orders as o"
 				+" INNER JOIN Customer as c ON c.CustomerID = o.CustomerID_FK"
 				+" INNER JOIN Cart as ca ON ca.OrderID_FK = o.OrderID"
 				+" INNER JOIN Status as st ON st.StatusID = o.StatusID_FK"
-				+" JOIN Service as s WHERE s.ServiceID = ca.ServiceID_FK AND o.OrderID = :orderID";
+				+" JOIN Service as s WHERE s.ServiceID = ca.ServiceID_FK AND a.ArtistID= t.ArtistID_FK AND t.TimeID = O.TimeID_FK AND o.OrderID=:orderID";
+
 		RowMapper<Invoice> rm = new InvoiceRowMapper();
 		MapSqlParameterSource paramMap = new MapSqlParameterSource();
 		paramMap.addValue("orderID", orderID);
@@ -77,5 +92,12 @@ public class OrderDaoImpl implements OrderDao {
 			System.out.println("No invoice found cause "+ e);
 			return null;
 		}
+	}
+
+	@Override
+	public int getLastInsert() {
+		String sql = "SELECT * FROM Orders ORDER BY orderID DESC LIMIT 1";
+		RowMapper<Order> rm = new OrderRowMapper();
+		return jdbcTemplate.query(sql, rm).get(0).getOrderID();
 	}
 }
