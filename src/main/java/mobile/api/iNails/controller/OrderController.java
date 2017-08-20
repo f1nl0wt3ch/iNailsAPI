@@ -53,7 +53,7 @@ public class OrderController {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="", method= RequestMethod.POST)
+	@RequestMapping(value="order", method= RequestMethod.POST)
 	public ResponseEntity<String> receiveNewOrder(@RequestBody RequestOrderImpl requestOrder) throws ParseException{
 		String email = requestOrder.getCustomer().getEmail();
 		String phone = requestOrder.getCustomer().getPhone();
