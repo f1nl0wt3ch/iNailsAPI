@@ -11,10 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import mobile.api.iNails.domain.Invoice;
 import mobile.api.iNails.domain.Order;
-import mobile.api.iNails.domain.Time;
 import mobile.api.iNails.rowmapper.InvoiceRowMapper;
 import mobile.api.iNails.rowmapper.OrderRowMapper;
-import mobile.api.iNails.rowmapper.TimeRowMapper;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
@@ -80,7 +78,7 @@ public class OrderDaoImpl implements OrderDao {
 				+" INNER JOIN Customer as c ON c.CustomerID = o.CustomerID_FK"
 				+" INNER JOIN Cart as ca ON ca.OrderID_FK = o.OrderID"
 				+" INNER JOIN Status as st ON st.StatusID = o.StatusID_FK"
-				+" JOIN Service as s WHERE s.ServiceID = ca.ServiceID_FK AND a.ArtistID= t.ArtistID_FK AND t.TimeID = O.TimeID_FK AND o.OrderID=:orderID";
+				+" JOIN Service as s WHERE s.ServiceID = ca.ServiceID_FK AND a.ArtistID= t.ArtistID_FK AND t.TimeID = o.TimeID_FK AND o.OrderID=:orderID";
 
 		RowMapper<Invoice> rm = new InvoiceRowMapper();
 		MapSqlParameterSource paramMap = new MapSqlParameterSource();

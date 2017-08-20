@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import mobile.api.iNails.dao.CategoryDao;
+import mobile.api.iNails.dao.OrderDao;
 import mobile.api.iNails.dao.ServiceDao;
 import mobile.api.iNails.dao.TimeDao;
 import mobile.api.iNails.domain.Artist;
 import mobile.api.iNails.domain.ArtistImpl;
 import mobile.api.iNails.domain.Category;
+import mobile.api.iNails.domain.Invoice;
+import mobile.api.iNails.domain.InvoiceImpl;
 import mobile.api.iNails.domain.Service;
 import mobile.api.iNails.domain.Time;
 import mobile.api.iNails.domain.TimeImpl;
@@ -27,6 +30,8 @@ public class TestController {
 	private ServiceDao serviceDao;
 	@Autowired
 	private TimeDao timeDao;
+	@Autowired
+	private OrderDao orderDao;
 	
 	@RequestMapping(value="test",method= RequestMethod.GET)
 	public String test(){
@@ -61,6 +66,14 @@ public class TestController {
 		timeDao.createTime(time);
 		System.out.println("Time id "+ timeDao.getLastInsert());
 		return "time";
+	}
+	
+	@RequestMapping(value="invoice", method = RequestMethod.GET)
+	public String testInvoice(){
+		Invoice invoice = new InvoiceImpl();
+		invoice = orderDao.findInvoiceByOrderNumber(1);
+		System.out.println(invoice.toString());
+		return "test invoice";
 	}
 
 }
